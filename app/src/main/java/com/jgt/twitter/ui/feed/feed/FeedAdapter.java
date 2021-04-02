@@ -58,7 +58,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedItemViewHo
         }
 
         void setTweet(Tweet tweet) {
-            binding.tvUsername.setText(tweet.getUsername());
             binding.tvBody.setText(tweet.getBody());
             binding.tvDate.setText(Long.toString(tweet.getTimestamp()));
             binding.layoutTweet.setOnClickListener(onClickListener);

@@ -39,17 +39,19 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
         viewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
         viewModel.getOnRegister().observe(getViewLifecycleOwner(), this::onRegister);
-        viewModel.getRegisterMessage().observe(getViewLifecycleOwner(), this::onRegisterMessage);
+        viewModel.getToastMessage().observe(getViewLifecycleOwner(), this::onToastMessage);
 
         UIUtils.setUpToolbar(activity, true, getString(R.string.fragment_register_label));
     }
 
-    private void onRegisterMessage(String message) {
+    private void onToastMessage(String message) {
         UIUtils.showToast(getActivity(), message);
     }
 
     private void onRegister(Boolean isRegistered) {
         if (null != isRegistered && isRegistered) {
+            viewModel.addUserToDb(binding.etUsername.getText().toString(),
+                    binding.etEmail.getText().toString());
             startActivity(new Intent(getActivity(), FeedActivity.class));
         }
     }

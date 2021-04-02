@@ -48,8 +48,9 @@ dependencies {
     //Firebase Auth
     implementation 'com.google.firebase:firebase-auth'
 
-    //Firebase CloudFirestore
+    //Firebase Firestore
     implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.firebase:firebase-database'
 
     //Logging
     implementation "com.jakewharton.timber:timber:4.7.1"

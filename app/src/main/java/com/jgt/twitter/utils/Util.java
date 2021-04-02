@@ -12,7 +12,7 @@ public class Util {
         List<Tweet> tweetList = new LinkedList<>();
 
         for (int i = 1; i <= size; i++) {
-            tweetList.add(new Tweet("username", "body " + i, i * 11111));
+            tweetList.add(new Tweet("body " + i, i * 11111));
         }
 
         return tweetList;

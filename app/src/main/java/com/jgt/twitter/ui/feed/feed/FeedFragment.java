@@ -11,9 +11,11 @@ import android.view.ViewGroup;
 
 import com.jgt.twitter.R;
 import com.jgt.twitter.databinding.FragmentFeedBinding;
+import com.jgt.twitter.firebase.db.entity.Tweet;
 import com.jgt.twitter.ui.UIUtils;
 import com.jgt.twitter.ui.auth.AuthActivity;
-import com.jgt.twitter.utils.Util;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -60,19 +62,29 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         adapter = new FeedAdapter();
 
         adapter.setOnClickListener(this);
-        adapter.setTweetList(Util.getSampleTweetList(10));
         binding = FragmentFeedBinding.bind(view);
         binding.rvFeed.setHasFixedSize(true);
         binding.rvFeed.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.rvFeed.setAdapter(adapter);
+        binding.btnTweet.setOnClickListener(this);
 
         viewModel = new ViewModelProvider(this).get(FeedViewModel.class);
         viewModel.getOnSignOut().observe(getViewLifecycleOwner(), this::onSignOut);
-        viewModel.getSignOutMessage().observe(getViewLifecycleOwner(), this::onSignOutMessage);
-
+        viewModel.getToastMessage().observe(getViewLifecycleOwner(), this::onToastMessage);
+        viewModel.getUsername().observe(getViewLifecycleOwner(), this::onUsernameObtained);
+        viewModel.getObsTweetList().observe(getViewLifecycleOwner(), this::onTweetsRetrieved);
+        
         UIUtils.setUpToolbar(activity, false, getString(R.string.fragment_feed_label));
 
         viewModel.loadCurrentUser();
+    }
+
+    private void onTweetsRetrieved(List<Tweet> tweets) {
+        adapter.setTweetList(tweets);
+    }
+
+    private void onUsernameObtained(String username) {
+        binding.tvTweetUser.setText(username);
     }
 
     private void onSignOut(Boolean isSignedOut) {
@@ -81,13 +93,22 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void onSignOutMessage(String message) {
+    private void onToastMessage(String message) {
         UIUtils.showToast(activity, message);
     }
 
     @Override
     public void onClick(View view) {
-        navController.navigate(R.id.on_tweet_clicked);
+        int id = view.getId();
+        switch (id) {
+            case R.id.btnTweet:
+                viewModel.addTweet(binding.etTweetBody.getText().toString(),
+                        System.currentTimeMillis());
+                break;
+            default:
+                navController.navigate(R.id.on_tweet_clicked);
+                break;
+        }
     }
 
     @Override

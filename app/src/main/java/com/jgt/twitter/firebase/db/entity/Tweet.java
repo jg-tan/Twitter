@@ -2,18 +2,15 @@ package com.jgt.twitter.firebase.db.entity;
 
 public class Tweet {
 
-    private String username;
     private String body;
     private long timestamp;
 
-    public Tweet(String username, String body, long timestamp) {
-        this.username = username;
-        this.body = body;
-        this.timestamp = timestamp;
+    public Tweet() {
     }
 
-    public String getUsername() {
-        return username;
+    public Tweet(String body, long timestamp) {
+        this.body = body;
+        this.timestamp = timestamp;
     }
 
     public String getBody() {

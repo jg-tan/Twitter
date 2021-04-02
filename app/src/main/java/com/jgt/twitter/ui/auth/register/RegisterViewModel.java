@@ -2,8 +2,11 @@ package com.jgt.twitter.ui.auth.register;
 
 import android.text.TextUtils;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.jgt.twitter.firebase.auth.FirebaseAuthListener;
 import com.jgt.twitter.firebase.auth.FirebaseAuthManager;
+import com.jgt.twitter.firebase.db.FirestoreManager;
+import com.jgt.twitter.firebase.db.entity.User;
 
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LiveData;
@@ -14,37 +17,38 @@ import timber.log.Timber;
 public class RegisterViewModel extends ViewModel implements FirebaseAuthListener {
 
     private MutableLiveData<Boolean> onRegister = new MutableLiveData<>();
-    private MutableLiveData<String> registerMessage = new MutableLiveData<>();
+    private MutableLiveData<String> toastMessage = new MutableLiveData<>();
 
     private FirebaseAuthManager authManager = FirebaseAuthManager.getInstance();
+    private FirestoreManager firestoreManager = FirestoreManager.getInstance();
 
     public LiveData<Boolean> getOnRegister() {
         return onRegister;
     }
 
-    public LiveData<String> getRegisterMessage() {
-        return registerMessage;
+    public LiveData<String> getToastMessage() {
+        return toastMessage;
     }
 
     public void register(FragmentActivity activity, String username, String email, String password) {
         if (TextUtils.isEmpty(username)) {
-            registerMessage.postValue("Username cannot be empty.");
+            toastMessage.postValue("Username cannot be empty.");
             return;
         }
 
         if (TextUtils.isEmpty(email)) {
-            registerMessage.postValue("Email cannot be empty.");
+            toastMessage.postValue("Email cannot be empty.");
 
             return;
         }
 
         if (TextUtils.isEmpty(password)) {
-            registerMessage.postValue("Password cannot be empty.");
+            toastMessage.postValue("Password cannot be empty.");
             return;
         }
 
         if (password.length() < 6) {
-            registerMessage.postValue("Password length must not be less than 6 characters.");
+            toastMessage.postValue("Password length must not be less than 6 characters.");
             return;
         }
 
@@ -54,14 +58,21 @@ public class RegisterViewModel extends ViewModel implements FirebaseAuthListener
     @Override
     public void onSuccess() {
         Timber.d("Register success!");
-        registerMessage.postValue("Register success!");
+        toastMessage.postValue("Register success!");
         onRegister.postValue(true);
     }
 
     @Override
     public void onFailure() {
         Timber.d("Register failed!");
-        registerMessage.postValue("Register failed!");
+        toastMessage.postValue("Register failed!");
         onRegister.postValue(false);
+    }
+
+    public void addUserToDb(String username, String email) {
+        FirebaseUser firebaseUser = authManager.getCurrentUser();
+        String uid = firebaseUser.getUid();
+        User user = new User(username, email);
+        firestoreManager.createUser(user, uid);
     }
 }

@@ -14,7 +14,7 @@ import timber.log.Timber;
 public class LoginViewModel extends ViewModel implements FirebaseAuthListener {
 
     private MutableLiveData<Boolean> onLogin = new MutableLiveData<>();
-    private MutableLiveData<String> loginMessage = new MutableLiveData<>();
+    private MutableLiveData<String> toastMessage = new MutableLiveData<>();
 
     private FirebaseAuthManager authManager = FirebaseAuthManager.getInstance();
 
@@ -22,19 +22,19 @@ public class LoginViewModel extends ViewModel implements FirebaseAuthListener {
         return onLogin;
     }
 
-    public LiveData<String> getLoginMessage() {
-        return loginMessage;
+    public LiveData<String> getToastMessage() {
+        return toastMessage;
     }
 
     public void login(FragmentActivity activity, String email, String password) {
         //TODO add regex for email
         if (TextUtils.isEmpty(email)) {
-            loginMessage.postValue("Email is empty");
+            toastMessage.postValue("Email is empty");
             return;
         }
 
         if (TextUtils.isEmpty(password)) {
-            loginMessage.postValue("Password is empty");
+            toastMessage.postValue("Password is empty");
             return;
         }
 
@@ -45,13 +45,13 @@ public class LoginViewModel extends ViewModel implements FirebaseAuthListener {
     public void onSuccess() {
         Timber.d("Logged in!");
         onLogin.postValue(true);
-        loginMessage.postValue("Logged in!");
+        toastMessage.postValue("Logged in!");
     }
 
     @Override
     public void onFailure() {
         Timber.d("Log in failed!");
         onLogin.postValue(false);
-        loginMessage.postValue("Log in failed!");
+        toastMessage.postValue("Log in failed!");
     }
 }
