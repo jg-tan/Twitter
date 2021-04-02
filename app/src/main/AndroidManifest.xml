@@ -11,7 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Twitter">
 
-        <activity android:name=".ui.auth.AuthActivity">
+        <activity android:name=".ui.auth.AuthActivity"
+            android:theme="@style/Theme.Twitter.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,7 +21,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.feed.FeedActivity"></activity>
+        <activity android:name=".ui.feed.FeedActivity"
+            android:theme="@style/Theme.Twitter.NoActionBar" />
 
     </application>
 

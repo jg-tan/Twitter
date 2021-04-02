@@ -1,6 +1,14 @@
 package com.jgt.twitter.ui.auth.register;
 
-public class RegisterViewModel {
-    private static final String TAG = RegisterViewModel.class.getSimpleName();
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
+public class RegisterViewModel extends ViewModel {
+    private static final String TAG = RegisterViewModel.class.getSimpleName();
+    private MutableLiveData<Boolean> onRegister =  new MutableLiveData<>();
+
+    public LiveData<Boolean> getOnRegister() {
+        return onRegister;
+    }
 }

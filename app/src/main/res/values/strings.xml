@@ -3,8 +3,8 @@
     <string name="action_settings">Settings</string>
 
     <!-- Strings used for fragments for navigation -->
-    <string name="fragment_login_label">Login Fragment</string>
-    <string name="fragment_register_label">Register Fragment</string>
-    <string name="fragment_feed_label">Feed Fragment</string>
-    <string name="fragment_tweet_label">Tweet Fragment</string>
+    <string name="fragment_login_label">Login</string>
+    <string name="fragment_register_label">Register</string>
+    <string name="fragment_feed_label">Feed</string>
+    <string name="fragment_tweet_label">Tweet</string>
 </resources>
