@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class FeedActivity extends AppCompatActivity {
-    private static final String TAG = FeedActivity.class.getSimpleName();
+
     private Toolbar toolbar;
 
     @Override

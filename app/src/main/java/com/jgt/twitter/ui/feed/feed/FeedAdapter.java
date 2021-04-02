@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedItemViewHolder> {
-    private static final String TAG = FeedAdapter.class.getSimpleName();
 
     private List<Tweet> tweetList;
     private View.OnClickListener onClickListener;

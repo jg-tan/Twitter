@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 
 public class TweetFragment extends Fragment {
-    private static final String TAG = TweetFragment.class.getSimpleName();
+
     private NavController navController;
     private FragmentTweetBinding binding;
     private TweetViewModel viewModel;

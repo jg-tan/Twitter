@@ -41,10 +41,15 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.navigation:navigation-fragment:2.3.3'
     implementation 'androidx.navigation:navigation-ui:2.3.3'
+
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:26.8.0')
+
     //Firebase Auth
     implementation 'com.google.firebase:firebase-auth'
+
+    //Firebase CloudFirestore
+    implementation 'com.google.firebase:firebase-firestore'
 
     //Logging
     implementation "com.jakewharton.timber:timber:4.7.1"

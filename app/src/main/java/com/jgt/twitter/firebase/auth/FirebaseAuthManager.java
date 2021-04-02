@@ -10,11 +10,12 @@ import com.google.firebase.auth.FirebaseUser;
 import timber.log.Timber;
 
 public class FirebaseAuthManager {
-    private static final String TAG = FirebaseAuthManager.class.getSimpleName();
+
     private static FirebaseAuthManager instance;
 
     private FirebaseAuth mAuth;
     private FirebaseAuthListener listener;
+    private FirebaseUser mUser;
 
     private FirebaseAuthManager() {
         mAuth = FirebaseAuth.getInstance();
@@ -53,6 +54,14 @@ public class FirebaseAuthManager {
         if (isLoggedIn()) {
             mAuth.signOut();
         }
+    }
+
+    public void loadCurrentUser() {
+        mUser = getCurrentUser();
+    }
+
+    public String getUserId() {
+        return null != mUser ? mUser.getUid() : null;
     }
 
     private void onSignInComplete(Task<AuthResult> authResultTask) {

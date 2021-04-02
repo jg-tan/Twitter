@@ -1,33 +1,26 @@
 package com.jgt.twitter.ui.auth.register;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.jgt.twitter.R;
 import com.jgt.twitter.databinding.FragmentRegisterBinding;
-import com.jgt.twitter.firebase.auth.FirebaseAuthListener;
-import com.jgt.twitter.firebase.auth.FirebaseAuthManager;
 import com.jgt.twitter.ui.UIUtils;
+import com.jgt.twitter.ui.feed.FeedActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import timber.log.Timber;
 
-public class RegisterFragment extends Fragment implements View.OnClickListener, FirebaseAuthListener {
-    private static final String TAG = RegisterFragment.class.getSimpleName();
-    private NavController navController;
+public class RegisterFragment extends Fragment implements View.OnClickListener {
+
     private FragmentRegisterBinding binding;
     private RegisterViewModel viewModel;
-    private ActionBar actionBar;
     private AppCompatActivity activity;
 
     @Nullable
@@ -39,7 +32,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
         binding = FragmentRegisterBinding.bind(view);
         activity = (AppCompatActivity) getActivity();
 
@@ -47,11 +39,19 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
 
         viewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
         viewModel.getOnRegister().observe(getViewLifecycleOwner(), this::onRegister);
+        viewModel.getRegisterMessage().observe(getViewLifecycleOwner(), this::onRegisterMessage);
 
         UIUtils.setUpToolbar(activity, true, getString(R.string.fragment_register_label));
     }
 
-    private void onRegister(Boolean aBoolean) {
+    private void onRegisterMessage(String message) {
+        UIUtils.showToast(getActivity(), message);
+    }
+
+    private void onRegister(Boolean isRegistered) {
+        if (null != isRegistered && isRegistered) {
+            startActivity(new Intent(getActivity(), FeedActivity.class));
+        }
     }
 
     @Override
@@ -59,26 +59,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener, 
         int id = view.getId();
         switch (id) {
             case R.id.btnRegister:
-                FirebaseAuthManager.getInstance().register(getActivity(),
-                        this,
+                viewModel.register(getActivity(),
+                        binding.etUsername.getText().toString(),
                         binding.etEmail.getText().toString(),
                         binding.etPassword.getText().toString());
                 break;
             default:
                 break;
         }
-    }
-
-    @Override
-    public void onSuccess() {
-        FirebaseUser user = FirebaseAuthManager.getInstance().getCurrentUser();
-        Timber.d(user.getEmail());
-        Timber.d(user.getUid());
-        UIUtils.showToast(activity, "Register success!");
-    }
-
-    @Override
-    public void onFailure() {
-        UIUtils.showToast(activity, "Register failed!");
     }
 }

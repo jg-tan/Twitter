@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 
 import com.jgt.twitter.R;
 import com.jgt.twitter.databinding.FragmentFeedBinding;
-import com.jgt.twitter.firebase.auth.FirebaseAuthManager;
 import com.jgt.twitter.ui.UIUtils;
 import com.jgt.twitter.ui.auth.AuthActivity;
 import com.jgt.twitter.utils.Util;
@@ -21,12 +20,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 public class FeedFragment extends Fragment implements View.OnClickListener {
-    private static final String TAG = FeedFragment.class.getSimpleName();
+
     private NavController navController;
     private FragmentFeedBinding binding;
     private FeedViewModel viewModel;
@@ -56,7 +56,9 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
+        activity = (AppCompatActivity) getActivity();
         adapter = new FeedAdapter();
+
         adapter.setOnClickListener(this);
         adapter.setTweetList(Util.getSampleTweetList(10));
         binding = FragmentFeedBinding.bind(view);
@@ -64,8 +66,23 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         binding.rvFeed.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.rvFeed.setAdapter(adapter);
 
-        activity = (AppCompatActivity) getActivity();
+        viewModel = new ViewModelProvider(this).get(FeedViewModel.class);
+        viewModel.getOnSignOut().observe(getViewLifecycleOwner(), this::onSignOut);
+        viewModel.getSignOutMessage().observe(getViewLifecycleOwner(), this::onSignOutMessage);
+
         UIUtils.setUpToolbar(activity, false, getString(R.string.fragment_feed_label));
+
+        viewModel.loadCurrentUser();
+    }
+
+    private void onSignOut(Boolean isSignedOut) {
+        if (null != isSignedOut && isSignedOut) {
+            startActivity(new Intent(activity, AuthActivity.class));
+        }
+    }
+
+    private void onSignOutMessage(String message) {
+        UIUtils.showToast(activity, message);
     }
 
     @Override
@@ -78,9 +95,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         int id = item.getItemId();
         switch (id) {
             case R.id.menuLogout:
-                FirebaseAuthManager.getInstance().signOut();
-                //start activity
-                startActivity(new Intent(activity, AuthActivity.class));
+                viewModel.signOut();
                 break;
             default:
         }

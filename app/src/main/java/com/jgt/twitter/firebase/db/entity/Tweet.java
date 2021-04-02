@@ -1,7 +1,6 @@
 package com.jgt.twitter.firebase.db.entity;
 
 public class Tweet {
-    private static final String TAG = Tweet.class.getSimpleName();
 
     private String username;
     private String body;

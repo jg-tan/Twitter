@@ -8,26 +8,22 @@ import android.view.ViewGroup;
 
 import com.jgt.twitter.R;
 import com.jgt.twitter.databinding.FragmentLoginBinding;
-import com.jgt.twitter.firebase.auth.FirebaseAuthListener;
-import com.jgt.twitter.firebase.auth.FirebaseAuthManager;
 import com.jgt.twitter.ui.UIUtils;
 import com.jgt.twitter.ui.feed.FeedActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import timber.log.Timber;
 
-public class LoginFragment extends Fragment implements View.OnClickListener, FirebaseAuthListener {
+public class LoginFragment extends Fragment implements View.OnClickListener {
+
     private FragmentLoginBinding binding;
     private NavController navController;
     private LoginViewModel viewModel;
-    private ActionBar actionBar;
     private AppCompatActivity activity;
 
     @Nullable
@@ -48,11 +44,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Fir
 
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         viewModel.getOnLogin().observe(getViewLifecycleOwner(), this::onLogin);
-
+        viewModel.getLoginMessage().observe(getViewLifecycleOwner(), this::onLoginMessage);
         UIUtils.setUpToolbar(activity, false, getString(R.string.fragment_login_label));
     }
 
-    private void onLogin(Boolean aBoolean) {
+    private void onLoginMessage(String message) {
+        UIUtils.showToast(activity, message);
+    }
+
+    private void onLogin(Boolean isLoggedIn) {
+        if (null != isLoggedIn && isLoggedIn) {
+            startActivity(new Intent(getActivity(), FeedActivity.class));
+        }
     }
 
     @Override
@@ -60,9 +63,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Fir
         int id = view.getId();
         switch (id) {
             case R.id.btnLogin:
-                Timber.d("isLoggedIn: " + FirebaseAuthManager.getInstance().isLoggedIn());
-                FirebaseAuthManager.getInstance().signIn(getActivity(),
-                        this,
+                viewModel.login(activity,
                         binding.etEmail.getText().toString(),
                         binding.etPassword.getText().toString());
                 break;
@@ -72,16 +73,5 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Fir
             default:
                 break;
         }
-    }
-
-    @Override
-    public void onSuccess() {
-        UIUtils.showToast(activity, "Login success!");
-        startActivity(new Intent(getActivity(), FeedActivity.class));
-    }
-
-    @Override
-    public void onFailure() {
-        UIUtils.showToast(activity, "Login failed!");
     }
 }

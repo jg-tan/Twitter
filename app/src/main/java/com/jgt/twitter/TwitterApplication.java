@@ -5,7 +5,6 @@ import android.app.Application;
 import timber.log.Timber;
 
 public class TwitterApplication extends Application {
-    private static final String TAG = TwitterApplication.class.getSimpleName();
 
     @Override
     public void onCreate() {

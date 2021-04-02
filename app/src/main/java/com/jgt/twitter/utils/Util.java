@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Util {
-    private static final String TAG = Util.class.getSimpleName();
 
     //Temp
     public static List<Tweet> getSampleTweetList(int size) {
