@@ -45,6 +45,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         viewModel.getOnLogin().observe(getViewLifecycleOwner(), this::onLogin);
         viewModel.getToastMessage().observe(getViewLifecycleOwner(), this::onToastMessage);
+
         UIUtils.setUpToolbar(activity, false, getString(R.string.fragment_login_label));
     }
 

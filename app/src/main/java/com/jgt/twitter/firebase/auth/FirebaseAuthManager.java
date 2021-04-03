@@ -14,7 +14,7 @@ public class FirebaseAuthManager {
 
     private static FirebaseAuthManager instance;
 
-    private FirebaseAuth mAuth;
+    private final FirebaseAuth mAuth;
     private FirebaseAuthListener listener;
     private FirebaseUser mUser;
 
@@ -53,7 +53,7 @@ public class FirebaseAuthManager {
 
     public void signOut() {
         mAuth.signOut();
-        if (isLoggedIn()) {
+        if (!isLoggedIn()) {
             cleanUp();
         }
     }

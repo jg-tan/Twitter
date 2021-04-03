@@ -1,6 +1,5 @@
 package com.jgt.twitter.ui.feed.feed;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,7 +12,6 @@ import com.jgt.twitter.R;
 import com.jgt.twitter.databinding.FragmentFeedBinding;
 import com.jgt.twitter.firebase.db.entity.Tweet;
 import com.jgt.twitter.ui.UIUtils;
-import com.jgt.twitter.ui.auth.AuthActivity;
 
 import java.util.List;
 
@@ -22,14 +20,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import timber.log.Timber;
 
 public class FeedFragment extends Fragment implements View.OnClickListener {
 
-    private NavController navController;
     private FragmentFeedBinding binding;
     private FeedViewModel viewModel;
     private FeedAdapter adapter;
@@ -56,7 +50,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
         activity = (AppCompatActivity) getActivity();
 
         adapter = new FeedAdapter();
@@ -69,7 +62,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         binding.btnTweet.setOnClickListener(this);
 
         viewModel = new ViewModelProvider(this).get(FeedViewModel.class);
-        viewModel.init();
         viewModel.getOnSignOut().observe(getViewLifecycleOwner(), this::onSignOut);
         viewModel.getToastMessage().observe(getViewLifecycleOwner(), this::onToastMessage);
         viewModel.getUsername().observe(getViewLifecycleOwner(), this::onUsernameObtained);
@@ -78,12 +70,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         UIUtils.setUpToolbar(activity, false, getString(R.string.fragment_feed_label));
 
         viewModel.loadCurrentUser();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        viewModel.cleanUp(getViewLifecycleOwner());
     }
 
     private void onTweetsRetrieved(List<Tweet> tweets) {
@@ -96,7 +82,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
 
     private void onSignOut(Boolean isSignedOut) {
         if (null != isSignedOut && isSignedOut) {
-            startActivity(new Intent(activity, AuthActivity.class));
+            activity.finish();
         }
     }
 
@@ -114,7 +100,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.btnDelete:
                 Tweet tweet = (Tweet) view.getTag();
-                Timber.e(tweet.getTweetId());
                 viewModel.deleteTweet(tweet);
                 break;
             default:

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.jgt.twitter.R;
 import com.jgt.twitter.databinding.ItemFeedBinding;
 import com.jgt.twitter.firebase.db.entity.Tweet;
+import com.jgt.twitter.utils.Util;
 
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedItemViewHo
         void setTweet(Tweet tweet) {
             binding.btnDelete.setTag(tweet);
             binding.tvBody.setText(tweet.getBody());
-            binding.tvDate.setText(Long.toString(tweet.getTimestamp()));
+            binding.tvDate.setText(Util.toDate(tweet.getTimestamp()));
             binding.layoutTweet.setOnClickListener(onClickListener);
         }
     }

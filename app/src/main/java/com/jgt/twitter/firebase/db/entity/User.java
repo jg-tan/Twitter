@@ -4,6 +4,7 @@ public class User {
 
     private String username;
     private String email;
+    private String uid;
 
     public User() {
     }
@@ -27,5 +28,22 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", uid='" + uid + '\'' +
+                '}';
     }
 }

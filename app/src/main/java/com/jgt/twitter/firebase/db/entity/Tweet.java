@@ -37,4 +37,13 @@ public class Tweet {
     public String getTweetId() {
         return this.tweetId;
     }
+
+    @Override
+    public String toString() {
+        return "Tweet{" +
+                "body='" + body + '\'' +
+                ", timestamp=" + timestamp +
+                ", tweetId='" + tweetId + '\'' +
+                '}';
+    }
 }

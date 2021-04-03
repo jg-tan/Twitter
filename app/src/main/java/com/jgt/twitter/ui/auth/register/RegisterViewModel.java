@@ -16,11 +16,11 @@ import timber.log.Timber;
 
 public class RegisterViewModel extends ViewModel implements FirebaseAuthListener {
 
-    private MutableLiveData<Boolean> onRegister = new MutableLiveData<>();
-    private MutableLiveData<String> toastMessage = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> onRegister = new MutableLiveData<>();
+    private final MutableLiveData<String> toastMessage = new MutableLiveData<>();
 
-    private FirebaseAuthManager authManager = FirebaseAuthManager.getInstance();
-    private FirestoreManager firestoreManager = FirestoreManager.getInstance();
+    private final FirebaseAuthManager authManager = FirebaseAuthManager.getInstance();
+    private final FirestoreManager firestoreManager = FirestoreManager.getInstance();
 
     public LiveData<Boolean> getOnRegister() {
         return onRegister;
@@ -64,7 +64,6 @@ public class RegisterViewModel extends ViewModel implements FirebaseAuthListener
 
     @Override
     public void onFailure() {
-        Timber.d("Register failed!");
         toastMessage.postValue("Register failed!");
         onRegister.postValue(false);
     }

@@ -13,10 +13,10 @@ import timber.log.Timber;
 
 public class LoginViewModel extends ViewModel implements FirebaseAuthListener {
 
-    private MutableLiveData<Boolean> onLogin = new MutableLiveData<>();
-    private MutableLiveData<String> toastMessage = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> onLogin = new MutableLiveData<>();
+    private final MutableLiveData<String> toastMessage = new MutableLiveData<>();
 
-    private FirebaseAuthManager authManager = FirebaseAuthManager.getInstance();
+    private final FirebaseAuthManager authManager = FirebaseAuthManager.getInstance();
 
     public LiveData<Boolean> getOnLogin() {
         return onLogin;
@@ -50,7 +50,6 @@ public class LoginViewModel extends ViewModel implements FirebaseAuthListener {
 
     @Override
     public void onFailure() {
-        Timber.d("Log in failed!");
         onLogin.postValue(false);
         toastMessage.postValue("Log in failed!");
     }
