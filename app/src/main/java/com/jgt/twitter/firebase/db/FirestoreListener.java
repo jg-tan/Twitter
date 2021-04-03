@@ -1,4 +1,6 @@
-package com.jgt.twitter.firebase.db.entity;
+package com.jgt.twitter.firebase.db;
+
+import com.jgt.twitter.firebase.db.entity.Tweet;
 
 public interface FirestoreListener {
     void onUserLoaded();

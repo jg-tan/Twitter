@@ -2,7 +2,7 @@ package com.jgt.twitter.ui.feed.feed;
 
 import com.jgt.twitter.firebase.auth.FirebaseAuthManager;
 import com.jgt.twitter.firebase.db.FirestoreManager;
-import com.jgt.twitter.firebase.db.entity.FirestoreListener;
+import com.jgt.twitter.firebase.db.FirestoreListener;
 import com.jgt.twitter.firebase.db.entity.Tweet;
 
 import java.util.ArrayList;
