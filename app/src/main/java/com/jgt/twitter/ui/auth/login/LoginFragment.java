@@ -69,7 +69,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         binding.etPassword.getText().toString());
                 break;
             case R.id.btnRegister:
-                navController.navigate(R.id.on_register_clicked);
+                navController.navigate(R.id.on_go_to_register);
                 break;
             default:
                 break;

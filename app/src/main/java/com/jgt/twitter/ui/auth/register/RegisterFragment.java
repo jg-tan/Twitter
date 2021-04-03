@@ -16,10 +16,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 public class RegisterFragment extends Fragment implements View.OnClickListener {
 
     private FragmentRegisterBinding binding;
+    private NavController navController;
     private RegisterViewModel viewModel;
     private AppCompatActivity activity;
 
@@ -32,6 +35,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
         binding = FragmentRegisterBinding.bind(view);
         activity = (AppCompatActivity) getActivity();
 
@@ -53,6 +57,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             viewModel.addUserToDb(binding.etUsername.getText().toString(),
                     binding.etEmail.getText().toString());
             startActivity(new Intent(getActivity(), FeedActivity.class));
+            navController.navigate(R.id.on_register_clicked);
         }
     }
 

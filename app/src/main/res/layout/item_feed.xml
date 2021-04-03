@@ -16,6 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="tweet body"
+        android:textSize="16dp"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="@+id/tvDate"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/tvDate"
@@ -37,8 +39,8 @@
         android:id="@+id/btnDelete"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:clickable="true"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_close_black" />

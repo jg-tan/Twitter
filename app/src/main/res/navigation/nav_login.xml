@@ -11,7 +11,7 @@
         android:label="@string/fragment_login_label"
         tools:layout="@layout/fragment_login">
         <action
-            android:id="@+id/on_register_clicked"
+            android:id="@+id/on_go_to_register"
             app:destination="@+id/fragmentRegister" />
     </fragment>
 
@@ -20,6 +20,9 @@
         android:name="com.jgt.twitter.ui.auth.register.RegisterFragment"
         android:label="@string/fragment_register_label"
         tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/on_register_clicked"
+            app:destination="@+id/fragmentLogin" />
     </fragment>
 
 </navigation>

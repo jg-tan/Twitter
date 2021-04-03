@@ -1,12 +1,16 @@
 package com.jgt.twitter.ui.feed.feed;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.jgt.twitter.R;
 import com.jgt.twitter.databinding.FragmentFeedBinding;
@@ -22,7 +26,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-public class FeedFragment extends Fragment implements View.OnClickListener {
+public class FeedFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private FragmentFeedBinding binding;
     private FeedViewModel viewModel;
@@ -60,6 +64,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         binding.rvFeed.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.rvFeed.setAdapter(adapter);
         binding.btnTweet.setOnClickListener(this);
+        binding.etTweetBody.addTextChangedListener(this);
 
         viewModel = new ViewModelProvider(this).get(FeedViewModel.class);
         viewModel.getOnSignOut().observe(getViewLifecycleOwner(), this::onSignOut);
@@ -97,6 +102,8 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
             case R.id.btnTweet:
                 viewModel.addTweet(binding.etTweetBody.getText().toString(),
                         System.currentTimeMillis());
+                hideSoftKeyboard();
+                binding.etTweetBody.setText("");
                 break;
             case R.id.btnDelete:
                 Tweet tweet = (Tweet) view.getTag();
@@ -117,5 +124,41 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
             default:
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        int left = 280 - charSequence.length();
+        if (left < 50) {
+            if (left < 0) {
+                left = 0;
+                binding.btnTweet.setEnabled(false);
+            } else {
+                binding.btnTweet.setEnabled(true);
+            }
+            String count = left + " characters remaining.";
+            binding.tvCharCount.setText(count);
+            binding.tvCharCount.setVisibility(View.VISIBLE);
+        } else {
+            binding.tvCharCount.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+    }
+
+    private void hideSoftKeyboard() {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        View view = getView();
+        if (null != view) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }
