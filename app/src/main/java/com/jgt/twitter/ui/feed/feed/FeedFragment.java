@@ -19,13 +19,13 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import timber.log.Timber;
 
 public class FeedFragment extends Fragment implements View.OnClickListener {
 
@@ -33,7 +33,6 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
     private FragmentFeedBinding binding;
     private FeedViewModel viewModel;
     private FeedAdapter adapter;
-    private ActionBar actionBar;
     private AppCompatActivity activity;
 
     @Nullable
@@ -59,9 +58,10 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
         activity = (AppCompatActivity) getActivity();
-        adapter = new FeedAdapter();
 
+        adapter = new FeedAdapter();
         adapter.setOnClickListener(this);
+
         binding = FragmentFeedBinding.bind(view);
         binding.rvFeed.setHasFixedSize(true);
         binding.rvFeed.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -69,14 +69,21 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
         binding.btnTweet.setOnClickListener(this);
 
         viewModel = new ViewModelProvider(this).get(FeedViewModel.class);
+        viewModel.init();
         viewModel.getOnSignOut().observe(getViewLifecycleOwner(), this::onSignOut);
         viewModel.getToastMessage().observe(getViewLifecycleOwner(), this::onToastMessage);
         viewModel.getUsername().observe(getViewLifecycleOwner(), this::onUsernameObtained);
         viewModel.getObsTweetList().observe(getViewLifecycleOwner(), this::onTweetsRetrieved);
-        
+
         UIUtils.setUpToolbar(activity, false, getString(R.string.fragment_feed_label));
 
         viewModel.loadCurrentUser();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        viewModel.cleanUp(getViewLifecycleOwner());
     }
 
     private void onTweetsRetrieved(List<Tweet> tweets) {
@@ -105,8 +112,12 @@ public class FeedFragment extends Fragment implements View.OnClickListener {
                 viewModel.addTweet(binding.etTweetBody.getText().toString(),
                         System.currentTimeMillis());
                 break;
+            case R.id.btnDelete:
+                Tweet tweet = (Tweet) view.getTag();
+                Timber.e(tweet.getTweetId());
+                viewModel.deleteTweet(tweet);
+                break;
             default:
-                navController.navigate(R.id.on_tweet_clicked);
                 break;
         }
     }

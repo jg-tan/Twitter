@@ -9,17 +9,6 @@
         android:id="@+id/fragmentFeed"
         android:name="com.jgt.twitter.ui.feed.feed.FeedFragment"
         android:label="@string/fragment_feed_label"
-        tools:layout="@layout/fragment_feed">
-        <action
-            android:id="@+id/on_tweet_clicked"
-            app:destination="@+id/fragmentTweet" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/fragmentTweet"
-        android:name="com.jgt.twitter.ui.feed.tweet.TweetFragment"
-        android:label="@string/fragment_tweet_label"
-        tools:layout="@layout/fragment_tweet">
-    </fragment>
+        tools:layout="@layout/fragment_feed" />
 
 </navigation>

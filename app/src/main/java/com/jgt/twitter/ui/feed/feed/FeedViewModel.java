@@ -8,21 +8,21 @@ import com.jgt.twitter.firebase.db.entity.Tweet;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import timber.log.Timber;
 
 public class FeedViewModel extends ViewModel implements FirestoreListener {
 
-    private MutableLiveData<Boolean> onSignOut = new MutableLiveData<>();
-    private MutableLiveData<String> toastMessage = new MutableLiveData<>();
-    private MutableLiveData<String> username = new MutableLiveData<>();
-    private MutableLiveData<List<Tweet>> obsTweetList = new MutableLiveData<>();
+    private MutableLiveData<Boolean> onSignOut;
+    private MutableLiveData<String> toastMessage;
+    private MutableLiveData<String> username;
+    private MutableLiveData<List<Tweet>> obsTweetList;
 
     private FirebaseAuthManager authManager = FirebaseAuthManager.getInstance();
     private FirestoreManager firestoreManager = FirestoreManager.getInstance();
-
-    private List<Tweet> tweetList = new ArrayList<>();
 
     public LiveData<Boolean> getOnSignOut() {
         return onSignOut;
@@ -38,6 +38,20 @@ public class FeedViewModel extends ViewModel implements FirestoreListener {
 
     public LiveData<List<Tweet>> getObsTweetList() {
         return obsTweetList;
+    }
+
+    public void init() {
+        onSignOut = new MutableLiveData<>();
+        toastMessage = new MutableLiveData<>();
+        username = new MutableLiveData<>();
+        obsTweetList = new MutableLiveData<>();
+    }
+
+    public void cleanUp(LifecycleOwner owner) {
+        onSignOut.removeObservers(owner);
+        toastMessage.removeObservers(owner);
+        username.removeObservers(owner);
+        obsTweetList.removeObservers(owner);
     }
 
     public void loadCurrentUser() {
@@ -57,6 +71,10 @@ public class FeedViewModel extends ViewModel implements FirestoreListener {
         firestoreManager.addTweet(authManager.getUserId(), tweet);
     }
 
+    public void deleteTweet(Tweet tweet) {
+        firestoreManager.deleteTweet(authManager.getUserId(), tweet);
+    }
+
     @Override
     public void onFailure(String message) {
         toastMessage.postValue(message);
@@ -64,13 +82,21 @@ public class FeedViewModel extends ViewModel implements FirestoreListener {
 
     @Override
     public void onTweetAdded(Tweet tweet) {
-        tweetList.add(0, tweet);
-        obsTweetList.postValue(tweetList);
+        List<Tweet> tweets = obsTweetList.getValue();
+        if (null == tweets) {
+            tweets = new ArrayList<>();
+        }
+        tweets.add(0, tweet);
+        obsTweetList.postValue(tweets);
     }
 
     @Override
     public void onTweetDeleted(String key) {
-
+        List<Tweet> tweets = obsTweetList.getValue();
+        if (null != tweets) {
+            tweets.removeIf(tweet -> key.equals(tweet.getTweetId()));
+            obsTweetList.postValue(tweets);
+        }
     }
 
     @Override
@@ -83,4 +109,5 @@ public class FeedViewModel extends ViewModel implements FirestoreListener {
         toastMessage.postValue("User loaded successfully");
         username.postValue(firestoreManager.getCurrentUsername());
     }
+
 }

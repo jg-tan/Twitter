@@ -57,6 +57,12 @@ public class FirestoreManager implements ChildEventListener {
         mRef.child("users").child(uid).child("tweets").push().setValue(tweet);
     }
 
+    public void deleteTweet(String uid, Tweet tweet) {
+        if (null != tweet && null != tweet.getTweetId()) {
+            mRef.child("users").child(uid).child("tweets").child(tweet.getTweetId()).removeValue();
+        }
+    }
+
     public String getCurrentUsername() {
         return null != currentUser ? currentUser.getUsername() : null;
     }
@@ -64,10 +70,10 @@ public class FirestoreManager implements ChildEventListener {
     private void onGetCompleted(Task<DataSnapshot> task) {
         if (task.isSuccessful()) {
             DataSnapshot result = task.getResult();
-            Timber.d("" + result.getValue());
             this.currentUser = result.getValue(User.class);
             listener.onUserLoaded();
         } else {
+            Timber.e(task.getException());
             listener.onFailure("Failed to load user.");
         }
     }
@@ -77,19 +83,27 @@ public class FirestoreManager implements ChildEventListener {
             DataSnapshot result = task.getResult();
             List<Tweet> tweets = new ArrayList<>();
             Iterable<DataSnapshot> children = result.getChildren();
+
             for (DataSnapshot child : children) {
-                tweets.add(child.getValue(Tweet.class));
+                Tweet tweet = child.getValue(Tweet.class);
+                if (null != tweet) {
+                    tweet.setTweetId(child.getKey());
+                    tweets.add(tweet);
+                }
             }
 
             listener.onTweetsRetrieved(tweets);
         } else {
+            Timber.e(task.getException());
             listener.onFailure("Failed to retrieve tweets.");
         }
     }
 
     @Override
     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-        listener.onTweetAdded(snapshot.getValue(Tweet.class));
+        Tweet tweet = snapshot.getValue(Tweet.class);
+        tweet.setTweetId(snapshot.getKey());
+        listener.onTweetAdded(tweet);
     }
 
     @Override
@@ -111,5 +125,8 @@ public class FirestoreManager implements ChildEventListener {
     public void onCancelled(@NonNull DatabaseError error) {
 
     }
-//    public void write()
+
+    public void cleanUp() {
+        instance = null;
+    }
 }

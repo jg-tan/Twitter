@@ -6,6 +6,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.jgt.twitter.firebase.db.FirestoreManager;
 
 import timber.log.Timber;
 
@@ -51,8 +52,9 @@ public class FirebaseAuthManager {
     }
 
     public void signOut() {
+        mAuth.signOut();
         if (isLoggedIn()) {
-            mAuth.signOut();
+            cleanUp();
         }
     }
 
@@ -82,5 +84,11 @@ public class FirebaseAuthManager {
             Timber.e("Register failed: " + authResultTask.getException());
             listener.onFailure();
         }
+    }
+
+    private void cleanUp() {
+        mUser = null;
+        FirestoreManager.getInstance().cleanUp();
+        instance = null;
     }
 }
