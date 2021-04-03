@@ -10,6 +10,7 @@ import com.jgt.twitter.R;
 import com.jgt.twitter.databinding.FragmentRegisterBinding;
 import com.jgt.twitter.ui.UIUtils;
 import com.jgt.twitter.ui.feed.FeedActivity;
+import com.jgt.twitter.utils.SharedPrefUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,9 +57,15 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         if (null != isRegistered && isRegistered) {
             viewModel.addUserToDb(binding.etUsername.getText().toString(),
                     binding.etEmail.getText().toString());
-            startActivity(new Intent(getActivity(), FeedActivity.class));
-            navController.navigate(R.id.on_register_clicked);
+            SharedPrefUtils.get().saveCredentials(binding.etEmail.getText().toString(),
+                    binding.etPassword.getText().toString());
+            startFeedActivity();
         }
+    }
+
+    private void startFeedActivity() {
+        startActivity(new Intent(activity, FeedActivity.class));
+        activity.finish();
     }
 
     @Override

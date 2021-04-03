@@ -1,6 +1,7 @@
 package com.jgt.twitter.ui.feed.feed;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +17,8 @@ import com.jgt.twitter.R;
 import com.jgt.twitter.databinding.FragmentFeedBinding;
 import com.jgt.twitter.firebase.db.entity.Tweet;
 import com.jgt.twitter.ui.UIUtils;
+import com.jgt.twitter.ui.auth.AuthActivity;
+import com.jgt.twitter.utils.SharedPrefUtils;
 
 import java.util.List;
 
@@ -87,12 +90,18 @@ public class FeedFragment extends Fragment implements View.OnClickListener, Text
 
     private void onSignOut(Boolean isSignedOut) {
         if (null != isSignedOut && isSignedOut) {
-            activity.finish();
+            SharedPrefUtils.get().clearCredentials();
+            startAuthActivity();
         }
     }
 
     private void onToastMessage(String message) {
         UIUtils.showToast(activity, message);
+    }
+
+    private void startAuthActivity() {
+        startActivity(new Intent(activity, AuthActivity.class));
+        activity.finish();
     }
 
     @Override

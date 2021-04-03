@@ -10,6 +10,7 @@ import com.jgt.twitter.R;
 import com.jgt.twitter.databinding.FragmentLoginBinding;
 import com.jgt.twitter.ui.UIUtils;
 import com.jgt.twitter.ui.feed.FeedActivity;
+import com.jgt.twitter.utils.SharedPrefUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import timber.log.Timber;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
@@ -47,6 +49,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         viewModel.getToastMessage().observe(getViewLifecycleOwner(), this::onToastMessage);
 
         UIUtils.setUpToolbar(activity, false, getString(R.string.fragment_login_label));
+
+        if (SharedPrefUtils.get().isLoggedIn()) {
+            login(SharedPrefUtils.get().getEmail(), SharedPrefUtils.get().getPassword());
+        }
     }
 
     private void onToastMessage(String message) {
@@ -55,8 +61,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private void onLogin(Boolean isLoggedIn) {
         if (null != isLoggedIn && isLoggedIn) {
-            startActivity(new Intent(getActivity(), FeedActivity.class));
+            SharedPrefUtils.get().saveCredentials(binding.etEmail.getText().toString(),
+                    binding.etPassword.getText().toString());
+            startFeedActivity();
         }
+    }
+
+    private void login(String email, String password) {
+        viewModel.login(activity,
+                email,
+                password);
+    }
+
+    private void startFeedActivity() {
+        startActivity(new Intent(activity, FeedActivity.class));
+        activity.finish();
     }
 
     @Override
@@ -64,8 +83,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         int id = view.getId();
         switch (id) {
             case R.id.btnLogin:
-                viewModel.login(activity,
-                        binding.etEmail.getText().toString(),
+                login(binding.etEmail.getText().toString(),
                         binding.etPassword.getText().toString());
                 break;
             case R.id.btnRegister:

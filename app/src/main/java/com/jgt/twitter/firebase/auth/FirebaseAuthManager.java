@@ -86,7 +86,7 @@ public class FirebaseAuthManager {
         }
     }
 
-    private void cleanUp() {
+    public void cleanUp() {
         mUser = null;
         FirestoreManager.getInstance().cleanUp();
         instance = null;
