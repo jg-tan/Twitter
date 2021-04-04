@@ -18,10 +18,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 public class EditFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private FragmentEditBinding binding;
+    private NavController navController;
     private EditViewModel viewModel;
     private AppCompatActivity activity;
 
@@ -34,6 +37,7 @@ public class EditFragment extends Fragment implements View.OnClickListener, Text
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
         activity = (AppCompatActivity) getActivity();
 
         //init views
@@ -99,6 +103,7 @@ public class EditFragment extends Fragment implements View.OnClickListener, Text
         switch (id) {
             case R.id.btnEdit:
                 viewModel.editTweet(binding.etTweetBody.getText().toString());
+                navController.navigate(R.id.on_back_to_feed);
                 break;
             default:
                 break;
