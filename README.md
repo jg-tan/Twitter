@@ -12,7 +12,7 @@
 ![register screen](https://user-images.githubusercontent.com/37413949/113508213-4a9c2900-9581-11eb-8deb-3311e325ed75.PNG)
 
 - If user clicks "Register" from **Login Screen**, this screen will be shown. 
-- Clicking register will register the user to Firebase Auth, if successful, user will be automatically be logged in with the account and be taken to **Feed Screen**.
+- Clicking register will register the user to Firebase Auth, if successful, user will automatically be logged in with the account and be taken to **Feed Screen**.
 - Clicking on "x" will take the user back to **Login Screen**
 
 ## **Feed Screen**
