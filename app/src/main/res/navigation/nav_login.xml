@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navLogin"
+    app:startDestination="@id/fragmentLogin">
+
+    <fragment
+        android:id="@+id/fragmentLogin"
+        android:name="com.jgt.twitter.ui.auth.login.LoginFragment"
+        android:label="@string/fragment_login_label"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/on_go_to_register"
+            app:destination="@+id/fragmentRegister" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentRegister"
+        android:name="com.jgt.twitter.ui.auth.register.RegisterFragment"
+        android:label="@string/fragment_register_label"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/on_register_clicked"
+            app:destination="@+id/fragmentLogin" />
+    </fragment>
+
+</navigation>

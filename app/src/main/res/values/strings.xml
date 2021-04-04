@@ -1,12 +1,25 @@
 <resources>
     <string name="app_name">Twitter</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="fragment_login_label">Login</string>
+    <string name="fragment_register_label">Register</string>
+    <string name="fragment_feed_label">Feed</string>
+    <string name="fragment_tweet_label">Tweet</string>
+
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="register">Register</string>
+
+    <string name="tweet_body">Tweet Body</string>
+    <string name="date_posted">Date Posted</string>
+
+    <string name="whats_happening">What\'s happening?</string>
+    <string name="tweet">tweet</string>
+    <string name="count">count</string>
+
+    <string name="load_error">There was an error in loading user feed.</string>
 </resources>
