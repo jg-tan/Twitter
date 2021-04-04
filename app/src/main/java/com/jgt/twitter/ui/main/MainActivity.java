@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         boolean isLoggedIn = SharedPrefUtils.get().isLoggedIn();
         Timber.d("isLoggedIn: " + isLoggedIn);
+
         if (isLoggedIn) {
             startFeedActivity();
         } else {

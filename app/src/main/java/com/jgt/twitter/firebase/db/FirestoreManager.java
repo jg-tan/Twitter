@@ -60,6 +60,10 @@ public class FirestoreManager implements ChildEventListener {
         }
     }
 
+    public void editTweet(String tweetId, String body) {
+        mRef.child("users").child(currentUser.getUid()).child("tweets").child(tweetId).child("body").setValue(body);
+    }
+
     public String getCurrentUsername() {
         return null != currentUser ? currentUser.getUsername() : null;
     }
