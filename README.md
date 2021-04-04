@@ -17,16 +17,33 @@
 
 ## **Feed Screen**
 
-![feed screen](https://user-images.githubusercontent.com/37413949/113508210-496afc00-9581-11eb-9ef8-8e7d14119347.PNG)
+![feed screen](https://user-images.githubusercontent.com/37413949/113516950-b5645900-95af-11eb-944b-e1c579ad6351.PNG)
 
 - User can add tweets in this screen by typing their tweet in the edit text box above and clicking "Tweet" button.
 - Clicking "x" on the toolbar will sign out the user and be taken back to **Login Screen**.
 - Clicking "x" on individual tweets will delete the tweet from the Firestore database and from the twitter feed.
-
-![tweet](https://user-images.githubusercontent.com/37413949/113508393-59cfa680-9582-11eb-950b-bcd3482217f0.PNG)
+- Clicking on "pencil" icon will take the user to **Edit Screen** where they can edit the tweet selected.
+- 
+![tweet](https://user-images.githubusercontent.com/37413949/113516967-d036cd80-95af-11eb-9333-d8019c0d8359.PNG)
 
 - The edit text checks the character count of the tweet being written and once there are less than 50 characters available (230 characters typed), the count will start to show.
 
-![exceed](https://user-images.githubusercontent.com/37413949/113508540-2b9e9680-9583-11eb-8a4c-54b89b4e4b36.PNG)
+![exceed](https://user-images.githubusercontent.com/37413949/113516953-bdbc9400-95af-11eb-93a5-9857c7f12882.PNG)
 
 - If there are 280 characters already in the text box, the "tweet" button will be disabled.
+
+## **Feed Screen**
+
+![edit](https://user-images.githubusercontent.com/37413949/113516991-f2305000-95af-11eb-9b0c-46ab0f6b8dde.PNG)
+
+- The text body of the tweet selected is automatically loaded to the edit text box once the screen has loaded.
+- Clicking "Edit" will edit the said tweet in the database.
+
+![edit 2](https://user-images.githubusercontent.com/37413949/113516992-f3617d00-95af-11eb-9608-ca0e6ee36761.PNG)
+
+- Edit text box works the same way as posting tweet from **Feed Sscreen**
+
+
+
+
+
