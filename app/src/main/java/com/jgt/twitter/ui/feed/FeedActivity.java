@@ -19,10 +19,4 @@ public class FeedActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.tbFeed);
         setSupportActionBar(toolbar);
     }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
 }

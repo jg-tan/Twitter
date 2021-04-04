@@ -74,10 +74,27 @@ public class FeedFragment extends Fragment implements View.OnClickListener, Text
         viewModel.getToastMessage().observe(getViewLifecycleOwner(), this::onToastMessage);
         viewModel.getUsername().observe(getViewLifecycleOwner(), this::onUsernameObtained);
         viewModel.getObsTweetList().observe(getViewLifecycleOwner(), this::onTweetsRetrieved);
-
+        viewModel.isLoadingError().observe(getViewLifecycleOwner(), this::onLoadingError);
+        viewModel.getHasLoaded().observe(getViewLifecycleOwner(), this::onHasLoaded);
         UIUtils.setUpToolbar(activity, false, getString(R.string.fragment_feed_label));
 
         viewModel.loadCurrentUser();
+    }
+
+    private void onLoadingError(Boolean isLoadingError) {
+        binding.pbFeedLoad.setVisibility(View.GONE);
+        binding.tvError.setVisibility(View.VISIBLE);
+    }
+
+    private void onHasLoaded(Boolean hasLoaded) {
+        if (hasLoaded) {
+            binding.pbFeedLoad.setVisibility(View.GONE);
+            binding.layoutFeed.setVisibility(View.VISIBLE);
+        } else {
+            binding.pbFeedLoad.setVisibility(View.VISIBLE);
+            binding.layoutFeed.setVisibility(View.GONE);
+            viewModel.loadCurrentUser();
+        }
     }
 
     private void onTweetsRetrieved(List<Tweet> tweets) {
@@ -113,6 +130,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener, Text
                         System.currentTimeMillis());
                 hideSoftKeyboard();
                 binding.etTweetBody.setText("");
+                binding.etTweetBody.clearFocus();
                 break;
             case R.id.btnDelete:
                 Tweet tweet = (Tweet) view.getTag();

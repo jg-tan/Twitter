@@ -1,8 +1,8 @@
 package com.jgt.twitter.ui.feed.feed;
 
 import com.jgt.twitter.firebase.auth.FirebaseAuthManager;
-import com.jgt.twitter.firebase.db.FirestoreManager;
 import com.jgt.twitter.firebase.db.FirestoreListener;
+import com.jgt.twitter.firebase.db.FirestoreManager;
 import com.jgt.twitter.firebase.db.entity.Tweet;
 
 import java.util.ArrayList;
@@ -18,9 +18,15 @@ public class FeedViewModel extends ViewModel implements FirestoreListener {
     private final MutableLiveData<String> toastMessage = new MutableLiveData<>();
     private final MutableLiveData<String> username = new MutableLiveData<>();
     private final MutableLiveData<List<Tweet>> obsTweetList = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> hasLoaded = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isLoadingError = new MutableLiveData<>();
 
     private final FirebaseAuthManager authManager = FirebaseAuthManager.getInstance();
     private final FirestoreManager firestoreManager = FirestoreManager.getInstance();
+
+    private boolean isUserLoaded = false;
+    private boolean isTweetLoaded = false;
+    private int retry = 0;
 
     public LiveData<Boolean> getOnSignOut() {
         return onSignOut;
@@ -38,17 +44,30 @@ public class FeedViewModel extends ViewModel implements FirestoreListener {
         return obsTweetList;
     }
 
+    public LiveData<Boolean> getHasLoaded() {
+        return hasLoaded;
+    }
+
+    public LiveData<Boolean> isLoadingError() {
+        return isLoadingError;
+    }
+
     public void loadCurrentUser() {
-        authManager.loadCurrentUser();
-        firestoreManager.init(authManager.getUserId(), this);
-        obsTweetList.postValue(new ArrayList<>());
+        if (retry < 3) {
+            authManager.loadCurrentUser();
+            firestoreManager.init(authManager.getUserId(), this);
+            obsTweetList.postValue(new ArrayList<>());
+        } else {
+            isLoadingError.postValue(true);
+            retry = 0;
+        }
+        retry++;
     }
 
     public void signOut() {
         authManager.signOut();
         boolean isLoggedOff = !authManager.isLoggedIn();
         onSignOut.postValue(isLoggedOff);
-        toastMessage.postValue(isLoggedOff ? "Logged off!" : "Logged off failed!");
     }
 
     public void addTweet(String body, long timestamp) {
@@ -62,7 +81,7 @@ public class FeedViewModel extends ViewModel implements FirestoreListener {
 
     @Override
     public void onFailure(String message) {
-        toastMessage.postValue(message);
+        hasLoaded.postValue(false);
     }
 
     @Override
@@ -70,6 +89,8 @@ public class FeedViewModel extends ViewModel implements FirestoreListener {
         List<Tweet> tweets = obsTweetList.getValue();
         tweets.add(0, tweet);
         obsTweetList.postValue(tweets);
+        isTweetLoaded = true;
+        checkIfLoaded();
     }
 
     @Override
@@ -83,7 +104,20 @@ public class FeedViewModel extends ViewModel implements FirestoreListener {
 
     @Override
     public void onUserLoaded() {
-        toastMessage.postValue("User loaded successfully");
         username.postValue(firestoreManager.getCurrentUsername());
+        isUserLoaded = true;
+        checkIfLoaded();
+    }
+
+    @Override
+    public void onTweetLoaded() {
+        isTweetLoaded = true;
+        checkIfLoaded();
+    }
+
+    private void checkIfLoaded() {
+        if (isUserLoaded && isTweetLoaded) {
+            hasLoaded.postValue(true);
+        }
     }
 }

@@ -44,6 +44,7 @@ public class FirestoreManager implements ChildEventListener {
     public void init(String uid, FirestoreListener listener) {
         this.listener = listener;
         mRef.child("users").child(uid).get().addOnCompleteListener(this::onGetCompleted);
+        mRef.child("users").child(uid).child("tweets").removeEventListener(this);
         mRef.child("users").child(uid).child("tweets").addChildEventListener(this);
     }
 
@@ -67,6 +68,10 @@ public class FirestoreManager implements ChildEventListener {
             if (null != result) {
                 this.currentUser = result.getValue(User.class);
                 this.currentUser.setUid(result.getKey());
+                if (2 == result.getChildrenCount()) {
+                    //No Tweets yet, send call back that tweets has been loaded
+                    listener.onTweetLoaded();
+                }
                 listener.onUserLoaded();
             } else {
                 listener.onFailure("Failed to load user.");
@@ -102,10 +107,5 @@ public class FirestoreManager implements ChildEventListener {
     @Override
     public void onCancelled(@NonNull DatabaseError error) {
 
-    }
-
-    public void cleanUp() {
-        mRef.child("users").child(currentUser.getUid()).child("tweets").removeEventListener(this);
-        instance = null;
     }
 }

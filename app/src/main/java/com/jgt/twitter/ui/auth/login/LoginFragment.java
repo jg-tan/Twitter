@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import timber.log.Timber;
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
 

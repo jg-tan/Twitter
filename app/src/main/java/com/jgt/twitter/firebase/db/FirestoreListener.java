@@ -10,4 +10,6 @@ public interface FirestoreListener {
     void onTweetAdded(Tweet tweet);
 
     void onTweetDeleted(String key);
+
+    void onTweetLoaded();
 }
