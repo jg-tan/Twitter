@@ -44,6 +44,7 @@ public class EditFragment extends Fragment implements View.OnClickListener, Text
         //init view model
         viewModel = new ViewModelProvider(this).get(EditViewModel.class);
         viewModel.getIsTweetLoaded().observe(getViewLifecycleOwner(), this::onTweetLoaded);
+
         UIUtils.setUpToolbar(activity, true, getString(R.string.fragment_edit_label));
 
         Bundle bundle = getArguments();
@@ -55,6 +56,7 @@ public class EditFragment extends Fragment implements View.OnClickListener, Text
     private void onTweetLoaded(Boolean isTweetLoaded) {
         if (null != isTweetLoaded && isTweetLoaded) {
             binding.tvTweetUser.setText(viewModel.getUsername());
+            binding.tvTweetDate.setText(viewModel.getTweetDate());
             binding.etTweetBody.setText(viewModel.getTweetBody());
         }
     }
@@ -96,6 +98,7 @@ public class EditFragment extends Fragment implements View.OnClickListener, Text
 
         switch (id) {
             case R.id.btnEdit:
+                viewModel.editTweet(binding.etTweetBody.getText().toString());
                 break;
             default:
                 break;

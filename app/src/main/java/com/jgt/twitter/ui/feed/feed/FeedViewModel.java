@@ -121,6 +121,7 @@ public class FeedViewModel extends ViewModel implements FirestoreListener {
     private void checkIfLoaded() {
         if (isLoaded()) {
             hasLoaded.postValue(true);
+            retry = 0;
         }
     }
 
