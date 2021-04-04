@@ -68,8 +68,7 @@ public class FeedViewModel extends ViewModel implements FirestoreListener {
 
     public void signOut() {
         authManager.signOut();
-        boolean isLoggedOff = !authManager.isLoggedIn();
-        onSignOut.postValue(isLoggedOff);
+        onSignOut.postValue(!authManager.isLoggedIn());
     }
 
     public void addTweet(String body, long timestamp) {

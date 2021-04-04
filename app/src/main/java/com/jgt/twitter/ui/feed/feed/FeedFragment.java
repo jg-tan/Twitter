@@ -18,7 +18,9 @@ import com.jgt.twitter.databinding.FragmentFeedBinding;
 import com.jgt.twitter.firebase.db.entity.Tweet;
 import com.jgt.twitter.ui.UIUtils;
 import com.jgt.twitter.ui.auth.AuthActivity;
+import com.jgt.twitter.utils.Constants;
 import com.jgt.twitter.utils.SharedPrefUtils;
+import com.jgt.twitter.utils.Util;
 
 import java.util.List;
 
@@ -27,11 +29,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 public class FeedFragment extends Fragment implements View.OnClickListener, TextWatcher {
 
     private FragmentFeedBinding binding;
+    private NavController navController;
     private FeedViewModel viewModel;
     private FeedAdapter adapter;
     private AppCompatActivity activity;
@@ -57,6 +62,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener, Text
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
         activity = (AppCompatActivity) getActivity();
 
         //init adapter
@@ -128,6 +134,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener, Text
     @Override
     public void onClick(View view) {
         int id = view.getId();
+        Tweet tweet = (Tweet) view.getTag();
         switch (id) {
             case R.id.btnTweet:
                 viewModel.addTweet(binding.etTweetBody.getText().toString(),
@@ -137,8 +144,16 @@ public class FeedFragment extends Fragment implements View.OnClickListener, Text
                 binding.etTweetBody.clearFocus();
                 break;
             case R.id.btnDelete:
-                Tweet tweet = (Tweet) view.getTag();
-                viewModel.deleteTweet(tweet);
+                if (null != tweet) {
+                    viewModel.deleteTweet(tweet);
+                }
+                break;
+            case R.id.btnEdit:
+                if (null != tweet) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Constants.BUNDLE_TWEET, Util.toJson(tweet));
+                    navController.navigate(R.id.on_edit_tweet, bundle);
+                }
                 break;
             default:
                 break;

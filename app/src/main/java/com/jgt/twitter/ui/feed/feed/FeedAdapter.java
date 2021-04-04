@@ -57,10 +57,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedItemViewHo
             super(itemView);
             binding = ItemFeedBinding.bind(itemView);
             binding.btnDelete.setOnClickListener(onClickListener);
+            binding.btnEdit.setOnClickListener(onClickListener);
         }
 
         void setTweet(Tweet tweet) {
             binding.btnDelete.setTag(tweet);
+            binding.btnEdit.setTag(tweet);
             binding.tvBody.setText(tweet.getBody());
             binding.tvDate.setText(Util.toDate(tweet.getTimestamp()));
             binding.layoutTweet.setOnClickListener(onClickListener);
