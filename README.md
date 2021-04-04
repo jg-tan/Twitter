@@ -32,7 +32,7 @@
 
 - If there are 280 characters already in the text box, the "tweet" button will be disabled.
 
-## **Feed Screen**
+## **Edit Screen**
 
 ![edit](https://user-images.githubusercontent.com/37413949/113516991-f2305000-95af-11eb-9b0c-46ab0f6b8dde.PNG)
 
