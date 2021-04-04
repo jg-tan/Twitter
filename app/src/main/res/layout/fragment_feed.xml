@@ -11,7 +11,7 @@
         android:id="@+id/tvError"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="There was an error in loading user feed."
+        android:text="@string/load_error"
         android:textSize="20dp"
         android:gravity="center"
         android:visibility="gone"/>
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutTweet"
@@ -41,7 +41,7 @@
                 android:id="@+id/tvTweetUser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Username"
+                android:text="@string/username"
                 android:textColor="@color/black"
                 android:textSize="20dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@
                 android:id="@+id/etTweetBody"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="What's happening?"
+                android:hint="@string/whats_happening"
                 android:inputType="textMultiLine"
                 app:layout_constraintStart_toStartOf="@+id/tvTweetUser"
                 app:layout_constraintTop_toBottomOf="@+id/tvTweetUser" />
@@ -61,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Tweet"
+                android:text="@string/tweet"
                 app:layout_constraintEnd_toEndOf="@+id/etTweetBody"
                 app:layout_constraintTop_toBottomOf="@+id/etTweetBody" />
 
@@ -69,8 +69,8 @@
                 android:id="@+id/tvCharCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="15dp"
+                android:text="@string/count"
+                android:textSize="16dp"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -80,7 +80,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvFeed"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="1"
             tools:listitem="@layout/item_feed" />
     </LinearLayout>

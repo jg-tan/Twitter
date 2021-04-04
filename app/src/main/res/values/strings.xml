@@ -7,4 +7,19 @@
     <string name="fragment_register_label">Register</string>
     <string name="fragment_feed_label">Feed</string>
     <string name="fragment_tweet_label">Tweet</string>
+
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="register">Register</string>
+
+    <string name="tweet_body">Tweet Body</string>
+    <string name="date_posted">Date Posted</string>
+
+    <string name="whats_happening">What\'s happening?</string>
+    <string name="tweet">tweet</string>
+    <string name="count">count</string>
+
+    <string name="load_error">There was an error in loading user feed.</string>
 </resources>
