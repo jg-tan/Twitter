@@ -89,8 +89,10 @@ public class FeedViewModel extends ViewModel implements FirestoreListener {
         List<Tweet> tweets = obsTweetList.getValue();
         tweets.add(0, tweet);
         obsTweetList.postValue(tweets);
-        isTweetLoaded = true;
-        checkIfLoaded();
+        if (!(isUserLoaded && isTweetLoaded)) {
+            isTweetLoaded = true;
+            checkIfLoaded();
+        }
     }
 
     @Override

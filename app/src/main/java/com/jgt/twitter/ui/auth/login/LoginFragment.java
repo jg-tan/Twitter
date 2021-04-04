@@ -37,21 +37,19 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         navController = Navigation.findNavController(view);
-        binding = FragmentLoginBinding.bind(view);
         activity = (AppCompatActivity) getActivity();
 
+        //init views
+        binding = FragmentLoginBinding.bind(view);
         binding.btnLogin.setOnClickListener(this);
         binding.btnRegister.setOnClickListener(this);
 
+        //init view model
         viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         viewModel.getOnLogin().observe(getViewLifecycleOwner(), this::onLogin);
         viewModel.getToastMessage().observe(getViewLifecycleOwner(), this::onToastMessage);
 
         UIUtils.setUpToolbar(activity, false, getString(R.string.fragment_login_label));
-
-        if (SharedPrefUtils.get().isLoggedIn()) {
-            login(SharedPrefUtils.get().getEmail(), SharedPrefUtils.get().getPassword());
-        }
     }
 
     private void onToastMessage(String message) {
@@ -66,12 +64,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void login(String email, String password) {
-        viewModel.login(activity,
-                email,
-                password);
-    }
-
     private void startFeedActivity() {
         startActivity(new Intent(activity, FeedActivity.class));
         activity.finish();
@@ -82,7 +74,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         int id = view.getId();
         switch (id) {
             case R.id.btnLogin:
-                login(binding.etEmail.getText().toString(),
+                viewModel.login(activity,
+                        binding.etEmail.getText().toString(),
                         binding.etPassword.getText().toString());
                 break;
             case R.id.btnRegister:

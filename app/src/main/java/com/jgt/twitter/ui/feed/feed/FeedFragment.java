@@ -59,9 +59,11 @@ public class FeedFragment extends Fragment implements View.OnClickListener, Text
         super.onViewCreated(view, savedInstanceState);
         activity = (AppCompatActivity) getActivity();
 
+        //init adapter
         adapter = new FeedAdapter();
         adapter.setOnClickListener(this);
 
+        //init views
         binding = FragmentFeedBinding.bind(view);
         binding.rvFeed.setHasFixedSize(true);
         binding.rvFeed.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -69,6 +71,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener, Text
         binding.btnTweet.setOnClickListener(this);
         binding.etTweetBody.addTextChangedListener(this);
 
+        //init view model
         viewModel = new ViewModelProvider(this).get(FeedViewModel.class);
         viewModel.getOnSignOut().observe(getViewLifecycleOwner(), this::onSignOut);
         viewModel.getToastMessage().observe(getViewLifecycleOwner(), this::onToastMessage);
@@ -76,6 +79,7 @@ public class FeedFragment extends Fragment implements View.OnClickListener, Text
         viewModel.getObsTweetList().observe(getViewLifecycleOwner(), this::onTweetsRetrieved);
         viewModel.isLoadingError().observe(getViewLifecycleOwner(), this::onLoadingError);
         viewModel.getHasLoaded().observe(getViewLifecycleOwner(), this::onHasLoaded);
+
         UIUtils.setUpToolbar(activity, false, getString(R.string.fragment_feed_label));
 
         viewModel.loadCurrentUser();

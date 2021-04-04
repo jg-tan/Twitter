@@ -23,7 +23,6 @@ import androidx.navigation.Navigation;
 public class RegisterFragment extends Fragment implements View.OnClickListener {
 
     private FragmentRegisterBinding binding;
-    private NavController navController;
     private RegisterViewModel viewModel;
     private AppCompatActivity activity;
 
@@ -36,12 +35,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        navController = Navigation.findNavController(view);
-        binding = FragmentRegisterBinding.bind(view);
         activity = (AppCompatActivity) getActivity();
 
+        //init views
+        binding = FragmentRegisterBinding.bind(view);
         binding.btnRegister.setOnClickListener(this);
 
+        //init view model
         viewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
         viewModel.getOnRegister().observe(getViewLifecycleOwner(), this::onRegister);
         viewModel.getToastMessage().observe(getViewLifecycleOwner(), this::onToastMessage);
