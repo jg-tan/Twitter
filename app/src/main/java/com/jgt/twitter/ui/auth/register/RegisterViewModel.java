@@ -63,6 +63,7 @@ public class RegisterViewModel extends ViewModel implements FirebaseAuthListener
 
     @Override
     public void onFailure() {
+        Timber.e("Register failed!");
         onRegister.postValue(false);
     }
 

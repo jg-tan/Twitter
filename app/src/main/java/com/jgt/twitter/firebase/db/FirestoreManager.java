@@ -38,10 +38,12 @@ public class FirestoreManager implements ChildEventListener {
     }
 
     public void createUser(User user, String uid) {
+        Timber.d("Add user to db");
         mRef.child("users").child(uid).setValue(user);
     }
 
     public void init(String uid, FirestoreListener listener) {
+        Timber.d("Init FirestoreManager");
         this.listener = listener;
         mRef.child("users").child(uid).get().addOnCompleteListener(this::onGetCompleted);
         mRef.child("users").child(uid).child("tweets").removeEventListener(this);
@@ -72,8 +74,10 @@ public class FirestoreManager implements ChildEventListener {
                     //No Tweets yet, send call back that tweets has been loaded
                     listener.onTweetLoaded();
                 }
+                Timber.d("User loaded: " + currentUser);
                 listener.onUserLoaded();
             } else {
+                Timber.e("Failed to load user. user == null");
                 listener.onFailure("Failed to load user.");
             }
         } else {
@@ -86,6 +90,7 @@ public class FirestoreManager implements ChildEventListener {
     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
         Tweet tweet = snapshot.getValue(Tweet.class);
         tweet.setTweetId(snapshot.getKey());
+        Timber.d("onChildAdded (Tweet): " + tweet);
         listener.onTweetAdded(tweet);
     }
 
@@ -96,6 +101,8 @@ public class FirestoreManager implements ChildEventListener {
 
     @Override
     public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+        String key = snapshot.getKey();
+        Timber.d("onChildAdded (Tweet): " + key);
         listener.onTweetDeleted(snapshot.getKey());
     }
 

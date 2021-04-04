@@ -10,6 +10,7 @@ import com.jgt.twitter.utils.SharedPrefUtils;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +19,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (SharedPrefUtils.get().isLoggedIn()) {
+        boolean isLoggedIn = SharedPrefUtils.get().isLoggedIn();
+        Timber.d("isLoggedIn: " + isLoggedIn);
+        if (isLoggedIn) {
             startFeedActivity();
         } else {
             startAuthActivity();

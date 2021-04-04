@@ -27,7 +27,6 @@ public class LoginViewModel extends ViewModel implements FirebaseAuthListener {
     }
 
     public void login(FragmentActivity activity, String email, String password) {
-        //TODO add regex for email
         if (TextUtils.isEmpty(email)) {
             toastMessage.postValue("Email is empty");
             return;
@@ -49,6 +48,7 @@ public class LoginViewModel extends ViewModel implements FirebaseAuthListener {
 
     @Override
     public void onFailure() {
+        Timber.e("Log in failed!");
         onLogin.postValue(false);
     }
 }

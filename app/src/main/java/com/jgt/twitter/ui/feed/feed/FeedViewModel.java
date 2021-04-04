@@ -28,6 +28,8 @@ public class FeedViewModel extends ViewModel implements FirestoreListener {
     private boolean isTweetLoaded = false;
     private int retry = 0;
 
+    private static final int MAX_RETRIES = 3;
+
     public LiveData<Boolean> getOnSignOut() {
         return onSignOut;
     }
@@ -53,7 +55,7 @@ public class FeedViewModel extends ViewModel implements FirestoreListener {
     }
 
     public void loadCurrentUser() {
-        if (retry < 3) {
+        if (MAX_RETRIES > retry) {
             authManager.loadCurrentUser();
             firestoreManager.init(authManager.getUserId(), this);
             obsTweetList.postValue(new ArrayList<>());
@@ -89,7 +91,7 @@ public class FeedViewModel extends ViewModel implements FirestoreListener {
         List<Tweet> tweets = obsTweetList.getValue();
         tweets.add(0, tweet);
         obsTweetList.postValue(tweets);
-        if (!(isUserLoaded && isTweetLoaded)) {
+        if (!isLoaded()) {
             isTweetLoaded = true;
             checkIfLoaded();
         }
@@ -118,8 +120,12 @@ public class FeedViewModel extends ViewModel implements FirestoreListener {
     }
 
     private void checkIfLoaded() {
-        if (isUserLoaded && isTweetLoaded) {
+        if (isLoaded()) {
             hasLoaded.postValue(true);
         }
+    }
+
+    private boolean isLoaded() {
+        return isUserLoaded && isTweetLoaded;
     }
 }

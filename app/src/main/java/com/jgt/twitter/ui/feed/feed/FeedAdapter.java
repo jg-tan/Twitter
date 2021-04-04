@@ -51,7 +51,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.FeedItemViewHo
     }
 
     class FeedItemViewHolder extends RecyclerView.ViewHolder {
-        private ItemFeedBinding binding;
+        private final ItemFeedBinding binding;
 
         public FeedItemViewHolder(@NonNull View itemView) {
             super(itemView);

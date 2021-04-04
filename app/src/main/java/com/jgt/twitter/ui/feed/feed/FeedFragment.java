@@ -173,6 +173,9 @@ public class FeedFragment extends Fragment implements View.OnClickListener, Text
                 binding.btnTweet.setEnabled(true);
             }
             String count = left + " characters remaining.";
+            if (left <= 1) {
+                count = left + " character remaining.";
+            }
             binding.tvCharCount.setText(count);
             binding.tvCharCount.setVisibility(View.VISIBLE);
         } else {
