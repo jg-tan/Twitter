@@ -23,7 +23,7 @@
 - Clicking "x" on the toolbar will sign out the user and be taken back to **Login Screen**.
 - Clicking "x" on individual tweets will delete the tweet from the Firestore database and from the twitter feed.
 - Clicking on "pencil" icon will take the user to **Edit Screen** where they can edit the tweet selected.
-- 
+
 ![tweet](https://user-images.githubusercontent.com/37413949/113516967-d036cd80-95af-11eb-9333-d8019c0d8359.PNG)
 
 - The edit text checks the character count of the tweet being written and once there are less than 50 characters available (230 characters typed), the count will start to show.
