@@ -6,7 +6,6 @@
 
 - On first launch, it will show a Login screen where user can input their email and password to login. If the user does not have an account yet, clicking on "Register" will take them to **Register Screen** where they can create an account.
 - If there is a user who is logged in, this screen will not be shown and it will directly go to **Feed Screen** instead.
-============================================================
 
 ## **Register Screen**
 
@@ -14,7 +13,6 @@
 
 - If user clicks "Register" from **Login Screen**, this screen will be shown. Clicking register will register the user to Firebase Auth, if successful, user will be automatically be logged in with the account and be taken to **Feed Screen**.
 - Clicking on "x" will take the user back to **Login Screen**
-============================================================
 
 ## **Feed Screen**
 
