@@ -51,4 +51,7 @@
 - An instance that this may occur is when the currently logged in user has been deleted from the database.
 
 
+#### Notes
+- Dark mode UI was not configured for the project
+
 
