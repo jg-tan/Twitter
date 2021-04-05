@@ -45,6 +45,7 @@ public class FirestoreManager implements ChildEventListener {
     public void init(String uid, FirestoreListener listener) {
         Timber.d("Init FirestoreManager");
         this.listener = listener;
+        Timber.e(String.valueOf(mRef.child("users").child(uid) == null));
         mRef.child("users").child(uid).get().addOnCompleteListener(this::onGetCompleted);
         mRef.child("users").child(uid).child("tweets").removeEventListener(this);
         mRef.child("users").child(uid).child("tweets").addChildEventListener(this);
@@ -71,19 +72,30 @@ public class FirestoreManager implements ChildEventListener {
     private void onGetCompleted(Task<DataSnapshot> task) {
         if (task.isSuccessful()) {
             DataSnapshot result = task.getResult();
-            if (null != result) {
-                this.currentUser = result.getValue(User.class);
-                this.currentUser.setUid(result.getKey());
-                if (2 == result.getChildrenCount()) {
-                    //No Tweets yet, send call back that tweets has been loaded
-                    listener.onTweetLoaded();
-                }
-                Timber.d("User loaded: " + currentUser);
-                listener.onUserLoaded();
-            } else {
-                Timber.e("Failed to load user. user == null");
+
+            if (null == result) {
+                Timber.e("result = null");
                 listener.onFailure("Failed to load user.");
+                return;
             }
+
+            this.currentUser = result.getValue(User.class);
+
+            if (null == this.currentUser) {
+                Timber.e("User does not exist");
+                listener.onFailure("Failed to load user.");
+                return;
+            }
+
+            this.currentUser.setUid(result.getKey());
+
+            if (2 == result.getChildrenCount()) {
+                //No Tweets yet, send callback that tweets have been loaded
+                listener.onTweetLoaded();
+            }
+
+            Timber.d("User loaded: " + currentUser);
+            listener.onUserLoaded();
         } else {
             Timber.e(task.getException());
             listener.onFailure("Failed to load user.");
