@@ -43,7 +43,12 @@
 
 - Edit text box works the same way as posting tweet from **Feed Sscreen**
 
+## **Error Screen**
 
+![error](https://user-images.githubusercontent.com/37413949/113529083-12cec900-95f5-11eb-8ab2-814126824360.PNG)
+
+- **Error Screen** is shown instead of **Feed Screen** when there is an error in loading the user or tweets from the database.
+- An instance that this may occur is when the currently logged in user has been deleted from the database.
 
 
 
