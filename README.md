@@ -12,7 +12,7 @@
 ![register screen](https://user-images.githubusercontent.com/37413949/113508213-4a9c2900-9581-11eb-8deb-3311e325ed75.PNG)
 
 - If user clicks "Register" from **Login Screen**, this screen will be shown. 
-- Clicking register will register the user to Firebase Auth, if successful, user will automatically be logged in with the account and be taken to **Feed Screen**.
+- Clicking register will register the user to Firebase Auth. If successful, user will automatically be logged in with the account and be taken to **Feed Screen**.
 - Clicking on "x" will take the user back to **Login Screen**
 
 ## **Feed Screen**
@@ -26,7 +26,7 @@
 
 ![tweet](https://user-images.githubusercontent.com/37413949/113516967-d036cd80-95af-11eb-9333-d8019c0d8359.PNG)
 
-- The edit text checks the character count of the tweet being written and once there are less than 50 characters available (230 characters typed), the count will start to show.
+- The edit text checks the character count of the tweet being written and once there are less than 50 characters available, the count will start to show.
 
 ![exceed](https://user-images.githubusercontent.com/37413949/113516953-bdbc9400-95af-11eb-93a5-9857c7f12882.PNG)
 
