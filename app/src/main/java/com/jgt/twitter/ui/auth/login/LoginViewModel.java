@@ -49,6 +49,7 @@ public class LoginViewModel extends ViewModel implements FirebaseAuthListener {
     @Override
     public void onFailure() {
         Timber.e("Log in failed!");
+        toastMessage.postValue("Log in failed!");
         onLogin.postValue(false);
     }
 }
